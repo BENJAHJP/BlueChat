@@ -1,4 +1,8 @@
 package com.example.bluechat.presentation
 
-class BluetoothUiState {
-}
+import com.example.bluechat.BluetoothDevice
+
+data class BluetoothUiState(
+    val scannedDevices: List<BluetoothDevice> = emptyList(),
+    val pairedDevices: List<BluetoothDevice> = emptyList()
+)
