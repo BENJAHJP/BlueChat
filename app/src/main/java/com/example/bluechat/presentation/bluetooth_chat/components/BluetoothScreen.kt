@@ -13,9 +13,5 @@ fun BluetoothScreen(
 ) {
     val state = viewModel.state.collectAsState()
 
-    Scaffold(
-        containerColor = Color.White
-    ) {
 
-    }
 }
