@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -24,9 +25,18 @@ import com.example.bluechat.presentation.bluetooth_chat.BluetoothViewModel
 fun DeviceScreen(
     viewModel: BluetoothViewModel = hiltViewModel()
 ) {
+    val state = viewModel.state.collectAsState()
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
+        BluetoothDeviceList(
+            pairedDevices = state.value.pairedDevices,
+            scannedDevices = state.value.scannedDevices,
+            onClick = {},
+            modifier = Modifier.fillMaxWidth()
+                .weight(1f)
+        )
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceAround
@@ -60,7 +70,8 @@ fun BluetoothDeviceList(
         items(pairedDevices){ device ->
             Text(
                 text = device.name ?: "No name",
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .padding(16.dp)
                     .clickable { onClick(device) }
             )
@@ -76,7 +87,8 @@ fun BluetoothDeviceList(
         items(scannedDevices){ device ->
             Text(
                 text = device.name ?: "No name",
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .padding(16.dp)
                     .clickable { onClick(device) }
             )

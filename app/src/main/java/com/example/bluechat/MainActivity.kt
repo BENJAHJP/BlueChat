@@ -10,6 +10,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.LaunchedEffect
+import com.example.bluechat.presentation.bluetooth_chat.components.DeviceScreen
 import com.example.bluechat.ui.theme.BlueChatTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -57,7 +58,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             BlueChatTheme {
-
+                DeviceScreen()
             }
         }
     }
