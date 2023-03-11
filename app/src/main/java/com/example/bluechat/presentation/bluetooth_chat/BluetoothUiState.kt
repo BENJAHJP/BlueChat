@@ -1,4 +1,4 @@
-package com.example.bluechat.presentation
+package com.example.bluechat.presentation.bluetooth_chat
 
 import com.example.bluechat.BluetoothDevice
 
