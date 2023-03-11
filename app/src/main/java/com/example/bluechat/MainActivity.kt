@@ -1,8 +1,11 @@
 package com.example.bluechat
 
+import android.Manifest
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -19,7 +22,16 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             BlueChatTheme {
-
+                val enabledBluetoothLauncher = registerForActivityResult(
+                  ActivityResultContracts.StartActivityForResult()
+                ){ }
+                val permissionLauncher = registerForActivityResult(
+                    ActivityResultContracts.RequestMultiplePermissions()
+                ){ perms ->
+                    val canEnableBluetooth = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+                        perms[Manifest.permission.BLUETOOTH_CONNECT] == true
+                    } else true
+                }
             }
         }
     }
