@@ -9,9 +9,12 @@ import android.content.IntentFilter
 import android.content.pm.PackageManager
 import com.example.bluechat.domain.BluetoothController
 import com.example.bluechat.domain.BluetoothDeviceDomain
+import com.example.bluechat.domain.ConnectionResult
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.update
 
 @SuppressLint("MissingPermission")
@@ -41,6 +44,7 @@ class AndroidBluetoothController(
             if (newDevice in devices) devices else devices + newDevice
         }
     }
+
     init {
         updatePairedDevice()
     }
@@ -67,10 +71,6 @@ class AndroidBluetoothController(
         bluetoothAdapter?.cancelDiscovery()
     }
 
-    override fun startBluetoothServer() {
-        TODO("Not yet implemented")
-    }
-
     override fun release() {
         context.unregisterReceiver(foundDeviceReceiver)
     }
@@ -87,5 +87,27 @@ class AndroidBluetoothController(
     }
     private fun hasPermission(permission: String): Boolean {
         return context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED
+    }
+
+    override fun connectToDevice(device: BluetoothDeviceDomain): Flow<ConnectionResult> {
+        TODO("Not yet implemented")
+    }
+
+    override fun closeConnection() {
+        TODO("Not yet implemented")
+    }
+
+    override fun startBluetoothServer(): Flow<ConnectionResult> {
+        return flow {
+            if (!hasPermission(Manifest.permission.BLUETOOTH_CONNECT)){
+                throw SecurityException("No BLUETOOTH_CONNECT permission")
+            }
+
+            bluetoothAdapter?.listenUsingRfcommWithServiceRecord()
+        }
+    }
+
+    companion object{
+        const val SERVICE_UUID = ""
     }
 }
