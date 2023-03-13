@@ -18,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.bluechat.domain.BluetoothDevice
 import com.example.bluechat.presentation.bluetooth_chat.BluetoothViewModel
 
@@ -33,8 +34,9 @@ fun DeviceScreen(
         BluetoothDeviceList(
             pairedDevices = state.value.pairedDevices,
             scannedDevices = state.value.scannedDevices,
-            onClick = {},
-            modifier = Modifier.fillMaxWidth()
+            onClick = { viewModel.connectToDevice(it)},
+            modifier = Modifier
+                .fillMaxWidth()
                 .weight(1f)
         )
         Row(
@@ -46,6 +48,9 @@ fun DeviceScreen(
             }
             Button(onClick = { viewModel.stopScan() }) {
                 Text(text = "Stop scan")
+            }
+            Button(onClick = { viewModel.waitForIncomingConnections() }) {
+                Text(text = "Start server")
             }
         }
     }
@@ -64,7 +69,8 @@ fun BluetoothDeviceList(
                 text = "Paired Devices",
                 fontWeight = FontWeight.Bold,
                 fontSize = 24.sp,
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier
+                    .padding(16.dp)
             )
         }
         items(pairedDevices){ device ->
