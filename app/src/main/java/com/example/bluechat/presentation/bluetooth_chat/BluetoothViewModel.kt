@@ -90,7 +90,21 @@ class BluetoothViewModel @Inject constructor(
     }
 
     fun disconnectFromDevice(){
+        deviceConnectionJon?.cancel()
+        bluetoothController.closeConnection()
+        _state.update {
+            it.copy(
+                isConnecting = false,
+                isConnected = false
+            )
+        }
+    }
 
+    fun waitForIncomingConnections(){
+        _state.update { it.copy(isConnecting = true) }
+        deviceConnectionJon = bluetoothController
+            .startBluetoothServer()
+            .listen()
     }
     override fun onCleared() {
         super.onCleared()
