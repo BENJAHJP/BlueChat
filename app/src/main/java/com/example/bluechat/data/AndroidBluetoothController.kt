@@ -4,6 +4,8 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
+import android.bluetooth.BluetoothServerSocket
+import android.bluetooth.BluetoothSocket
 import android.content.Context
 import android.content.IntentFilter
 import android.content.pm.PackageManager
@@ -16,6 +18,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.update
+import java.io.IOException
+import java.util.UUID
 
 @SuppressLint("MissingPermission")
 class AndroidBluetoothController(
@@ -45,6 +49,8 @@ class AndroidBluetoothController(
         }
     }
 
+    private var currentServerSocket: BluetoothServerSocket? = null
+    private var currentClientSocket: BluetoothSocket? = null
     init {
         updatePairedDevice()
     }
@@ -103,11 +109,29 @@ class AndroidBluetoothController(
                 throw SecurityException("No BLUETOOTH_CONNECT permission")
             }
 
-            bluetoothAdapter?.listenUsingRfcommWithServiceRecord()
+            currentServerSocket = bluetoothAdapter?.listenUsingRfcommWithServiceRecord(
+                "chat_service",
+                UUID.fromString(SERVICE_UUID)
+            )
+
+            var shouldLoop = true
+
+            while (shouldLoop){
+                currentClientSocket = try {
+                    currentServerSocket?.accept()
+                } catch (e: IOException){
+                    shouldLoop = false
+                    null
+                }
+
+                currentClientSocket?.let {
+                    currentServerSocket?.close()
+                }
+            }
         }
     }
 
     companion object{
-        const val SERVICE_UUID = ""
+        const val SERVICE_UUID = "d4ae98d2-c192-11ed-afa1-0242ac120002"
     }
 }
