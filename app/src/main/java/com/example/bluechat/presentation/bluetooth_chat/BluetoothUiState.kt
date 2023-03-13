@@ -3,6 +3,7 @@ package com.example.bluechat.presentation.bluetooth_chat
 import com.example.bluechat.domain.BluetoothDevice
 
 data class BluetoothUiState(
+    val errorMessage: String? = null,
     val isConnected: Boolean = false,
     val isConnecting: Boolean = false,
     val scannedDevices: List<BluetoothDevice> = emptyList(),
