@@ -1,6 +1,6 @@
 package com.example.bluechat.presentation.bluetooth_chat
 
-import com.example.bluechat.BluetoothDevice
+import com.example.bluechat.domain.BluetoothDevice
 
 data class BluetoothUiState(
     val scannedDevices: List<BluetoothDevice> = emptyList(),

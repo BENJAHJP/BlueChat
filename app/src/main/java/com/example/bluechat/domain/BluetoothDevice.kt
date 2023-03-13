@@ -1,4 +1,4 @@
-package com.example.bluechat
+package com.example.bluechat.domain
 
 typealias BluetoothDeviceDomain = BluetoothDevice
 

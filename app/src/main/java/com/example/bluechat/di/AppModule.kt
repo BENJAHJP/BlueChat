@@ -1,7 +1,7 @@
 package com.example.bluechat.di
 
 import android.content.Context
-import com.example.bluechat.BluetoothController
+import com.example.bluechat.domain.BluetoothController
 import com.example.bluechat.data.AndroidBluetoothController
 import dagger.Module
 import dagger.Provides
@@ -16,7 +16,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideBluetoothController(@ApplicationContext context: Context): BluetoothController{
+    fun provideBluetoothController(@ApplicationContext context: Context): BluetoothController {
         return AndroidBluetoothController(context)
     }
 }

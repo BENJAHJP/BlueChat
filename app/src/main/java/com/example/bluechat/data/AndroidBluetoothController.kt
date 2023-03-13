@@ -7,8 +7,8 @@ import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.IntentFilter
 import android.content.pm.PackageManager
-import com.example.bluechat.BluetoothController
-import com.example.bluechat.BluetoothDeviceDomain
+import com.example.bluechat.domain.BluetoothController
+import com.example.bluechat.domain.BluetoothDeviceDomain
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -65,6 +65,10 @@ class AndroidBluetoothController(
         }
 
         bluetoothAdapter?.cancelDiscovery()
+    }
+
+    override fun startBluetoothServer() {
+        TODO("Not yet implemented")
     }
 
     override fun release() {

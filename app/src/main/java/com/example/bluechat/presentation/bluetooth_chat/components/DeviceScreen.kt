@@ -18,7 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.bluechat.BluetoothDevice
+import com.example.bluechat.domain.BluetoothDevice
 import com.example.bluechat.presentation.bluetooth_chat.BluetoothViewModel
 
 @Composable
