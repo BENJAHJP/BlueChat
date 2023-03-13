@@ -13,6 +13,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -45,7 +46,7 @@ fun DeviceScreen(
                 Text(text = "Start scan")
             }
             Button(onClick = { viewModel.stopScan() }) {
-                Text(text = "Start scan")
+                Text(text = "Stop scan")
             }
         }
     }
@@ -58,7 +59,7 @@ fun BluetoothDeviceList(
     onClick: (BluetoothDevice) -> Unit,
     modifier: Modifier = Modifier
 ){
-    LazyColumn(modifier = Modifier){
+    LazyColumn(modifier = modifier){
         item {
             Text(
                 text = "Paired Devices",
