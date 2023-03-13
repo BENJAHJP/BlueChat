@@ -3,6 +3,7 @@ package com.example.bluechat.presentation.bluetooth_chat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bluechat.domain.BluetoothController
+import com.example.bluechat.domain.BluetoothDeviceDomain
 import com.example.bluechat.domain.ConnectionResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -79,5 +80,15 @@ class BluetoothViewModel @Inject constructor(
                     isConnecting = false,
                 ) }
         }.launchIn(viewModelScope)
+    }
+
+    fun connectToDevice(device: BluetoothDeviceDomain){
+        _state.update { it.copy(isConnecting = true) }
+        bluetoothController.connectToDevice(device)
+            .listen()
+    }
+    override fun onCleared() {
+        super.onCleared()
+        bluetoothController.release()
     }
 }
