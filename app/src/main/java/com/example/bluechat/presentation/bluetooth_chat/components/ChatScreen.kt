@@ -1,5 +1,6 @@
 package com.example.bluechat.presentation.bluetooth_chat.components
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -35,6 +36,9 @@ fun ChatScreen(
     viewModel: BluetoothViewModel = hiltViewModel(),
 ) {
     val state = viewModel.state.collectAsState()
+
+    val dev = viewModel.state.collectAsState().value.pairedDevices.size
+    Log.d("===============================", "ChatScreen: ${dev.toString()}")
 
     var message = rememberSaveable { mutableStateOf("") }
 
