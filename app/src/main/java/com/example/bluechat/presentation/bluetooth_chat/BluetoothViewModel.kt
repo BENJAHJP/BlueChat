@@ -53,6 +53,11 @@ class BluetoothViewModel @Inject constructor(
     fun sendMessage(message: String){
         viewModelScope.launch {
             val bluetoothMessage = bluetoothController.trySendMessage(message)
+            if (bluetoothMessage != null){
+                _state.update { it.copy(
+                    messages = it.messages + bluetoothMessage
+                ) }
+            }
         }
     }
     fun startScan(){
