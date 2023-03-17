@@ -2,7 +2,6 @@ package com.example.bluechat.data
 
 import android.bluetooth.BluetoothSocket
 import com.example.bluechat.domain.BluetoothMessage
-import com.example.bluechat.domain.ConnectionResult
 import com.example.bluechat.domain.TransferFailedException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
