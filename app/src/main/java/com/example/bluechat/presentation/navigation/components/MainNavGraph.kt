@@ -17,7 +17,7 @@ fun MainNavGraph(
         startDestination = Screens.DeviceScreen.route
     ){
         composable(route = Screens.ChatScreen.route){
-            ChatScreen()
+            ChatScreen(navHostController = navHostController)
         }
         composable(route = Screens.DeviceScreen.route){
             DeviceScreen(navHostController = navHostController)
