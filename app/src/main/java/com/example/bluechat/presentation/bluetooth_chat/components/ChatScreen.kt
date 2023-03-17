@@ -65,8 +65,6 @@ fun ChatScreen(
                 "You're connected!",
                 Toast.LENGTH_LONG
             ).show()
-
-            navHostController.popBackStack()
         }
     }
 
