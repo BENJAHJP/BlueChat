@@ -37,7 +37,7 @@ class BluetoothViewModel @Inject constructor(
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), _state.value)
 
-    private var deviceConnectionJon: Job? = null
+    private var deviceConnectionJob: Job? = null
     init {
         bluetoothController.isConnected.onEach { isConnected ->
             _state.update { it.copy(isConnected = isConnected) }
@@ -89,7 +89,7 @@ class BluetoothViewModel @Inject constructor(
                     ) }
             }
         }
-    }.catch {
+    }.catch { throwable ->
             bluetoothController.closeConnection()
             _state.update {
                 it.copy(
@@ -101,12 +101,12 @@ class BluetoothViewModel @Inject constructor(
 
     fun connectToDevice(device: BluetoothDeviceDomain){
         _state.update { it.copy(isConnecting = true) }
-        deviceConnectionJon = bluetoothController.connectToDevice(device)
+        deviceConnectionJob = bluetoothController.connectToDevice(device)
             .listen()
     }
 
     fun disconnectFromDevice(){
-        deviceConnectionJon?.cancel()
+        deviceConnectionJob?.cancel()
         bluetoothController.closeConnection()
         _state.update {
             it.copy(
@@ -118,7 +118,7 @@ class BluetoothViewModel @Inject constructor(
 
     fun waitForIncomingConnections(){
         _state.update { it.copy(isConnecting = true) }
-        deviceConnectionJon = bluetoothController
+        deviceConnectionJob = bluetoothController
             .startBluetoothServer()
             .listen()
     }

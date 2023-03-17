@@ -97,8 +97,14 @@ class AndroidBluetoothController(
         )
     }
     override fun startDiscovery() {
-        if (!hasPermission(Manifest.permission.BLUETOOTH_SCAN)){
-            return
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (!hasPermission(Manifest.permission.BLUETOOTH_SCAN)) {
+                return
+            }
+        } else {
+            if (!hasPermission(Manifest.permission.BLUETOOTH)) {
+                return
+            }
         }
 
         context.registerReceiver(
@@ -122,15 +128,14 @@ class AndroidBluetoothController(
     }
 
     private fun updatePairedDevice(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
-            bluetoothAdapter
-                ?.bondedDevices
-                ?.map { it.toBluetoothDeviceDomain() }
-                ?.also { devices ->
-                    _pairedDevices.update { devices } }
-        }
-        if (!hasPermission(Manifest.permission.BLUETOOTH_CONNECT)){
-            return
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (!hasPermission(Manifest.permission.BLUETOOTH_CONNECT)) {
+                return
+            }
+        } else {
+            if (!hasPermission(Manifest.permission.BLUETOOTH)) {
+                return
+            }
         }
 
         bluetoothAdapter
@@ -145,8 +150,14 @@ class AndroidBluetoothController(
 
     override fun connectToDevice(device: BluetoothDeviceDomain): Flow<ConnectionResult> {
         return flow {
-            if (!hasPermission(Manifest.permission.BLUETOOTH_CONNECT)){
-                throw SecurityException("No BLUETOOTH_CONNECT permission")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                if (!hasPermission(Manifest.permission.BLUETOOTH_CONNECT)) {
+                    throw SecurityException("No BLUETOOTH_CONNECT permission")
+                }
+            } else {
+                if (!hasPermission(Manifest.permission.BLUETOOTH)) {
+                    throw SecurityException("No BLUETOOTH permission")
+                }
             }
 
             currentClientSocket = bluetoothAdapter
@@ -179,8 +190,14 @@ class AndroidBluetoothController(
 
     override fun startBluetoothServer(): Flow<ConnectionResult> {
         return flow {
-            if (!hasPermission(Manifest.permission.BLUETOOTH_CONNECT)){
-                throw SecurityException("No BLUETOOTH_CONNECT permission")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                if (!hasPermission(Manifest.permission.BLUETOOTH_CONNECT)) {
+                    throw SecurityException("No BLUETOOTH_CONNECT permission")
+                }
+            } else {
+                if (!hasPermission(Manifest.permission.BLUETOOTH)) {
+                    throw SecurityException("No BLUETOOTH permission")
+                }
             }
 
             currentServerSocket = bluetoothAdapter?.listenUsingRfcommWithServiceRecord(
@@ -215,8 +232,14 @@ class AndroidBluetoothController(
     }
 
     override suspend fun trySendMessage(message: String): BluetoothMessage? {
-        if (!hasPermission(Manifest.permission.BLUETOOTH_CONNECT)){
-            return null
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (!hasPermission(Manifest.permission.BLUETOOTH_CONNECT)) {
+                return null
+            }
+        } else {
+            if (!hasPermission(Manifest.permission.BLUETOOTH)) {
+                return null
+            }
         }
 
         if (dataTransferService == null){
