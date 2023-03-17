@@ -1,15 +1,19 @@
 package com.example.bluechat.data
 
 import android.bluetooth.BluetoothSocket
+import com.example.bluechat.domain.BluetoothMessage
 import com.example.bluechat.domain.ConnectionResult
+import com.example.bluechat.domain.TransferFailedException
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import java.io.IOException
 
 class BluetoothDataTransferService(
     private val socket: BluetoothSocket
 ) {
-    fun listenForIncomingMessages(): Flow<ConnectionResult> {
+    fun listenForIncomingMessages(): Flow<BluetoothMessage> {
         return flow {
             if (!socket.isConnected){
                 return@flow
@@ -20,9 +24,17 @@ class BluetoothDataTransferService(
                 val byteCount = try {
                     socket.inputStream.read(buffer)
                 } catch (e: IOException){
-
+                    throw TransferFailedException()
                 }
+
+                emit(
+                    buffer.decodeToString(
+                        endIndex = byteCount
+                    ).toBluetoothMessage(
+                        isFromLocalUser = false
+                    )
+                )
             }
-        }
+        }.flowOn(Dispatchers.IO)
     }
 }
