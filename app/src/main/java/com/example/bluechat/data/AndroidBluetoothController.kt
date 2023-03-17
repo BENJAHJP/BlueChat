@@ -12,6 +12,7 @@ import android.content.IntentFilter
 import android.content.pm.PackageManager
 import com.example.bluechat.domain.BluetoothController
 import com.example.bluechat.domain.BluetoothDeviceDomain
+import com.example.bluechat.domain.BluetoothMessage
 import com.example.bluechat.domain.ConnectionResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -200,6 +201,27 @@ class AndroidBluetoothController(
             closeConnection()
         }.flowOn(Dispatchers.IO)
     }
+
+    override suspend fun trySendMessage(message: String): BluetoothMessage? {
+        if (!hasPermission(Manifest.permission.BLUETOOTH_CONNECT)){
+            return null
+        }
+
+        if (dataTransferService == null){
+            return null
+        }
+
+        val bluetoothMessage = BluetoothMessage(
+            message = message,
+            senderName = bluetoothAdapter?.name ?: "Unknown name",
+            isFromLocalUser = true
+        )
+
+        dataTransferService?.sendMessage(bluetoothMessage.toByteArray())
+
+        return bluetoothMessage
+    }
+
     override fun release() {
         context.unregisterReceiver(foundDeviceReceiver)
         context.unregisterReceiver(bluetoothStateReceiver)
