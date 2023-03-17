@@ -11,7 +11,6 @@ import android.content.Context
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Build
-import android.util.Log
 import com.example.bluechat.domain.BluetoothController
 import com.example.bluechat.domain.BluetoothDeviceDomain
 import com.example.bluechat.domain.BluetoothMessage
