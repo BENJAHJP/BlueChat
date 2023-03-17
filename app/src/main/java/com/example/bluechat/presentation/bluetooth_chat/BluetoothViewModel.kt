@@ -44,9 +44,7 @@ class BluetoothViewModel @Inject constructor(
         }.launchIn(viewModelScope)
 
         bluetoothController.errors.onEach { error ->
-            _state.update { it.copy(
-                errorMessage = error
-            ) }
+            _state.update { it.copy(errorMessage = error) }
         }.launchIn(viewModelScope)
     }
 
