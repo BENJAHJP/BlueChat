@@ -2,8 +2,10 @@ package com.example.bluechat.presentation.bluetooth_chat.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -31,31 +33,33 @@ fun DeviceScreen(
 ) {
     val state by viewModel.state.collectAsState()
 
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        BluetoothDeviceList(
-            pairedDevices = state.pairedDevices,
-            scannedDevices = state.scannedDevices,
-            onClick = {
-                viewModel.connectToDevice(it)
-                navHostController.navigate(Screens.ChatScreen.route) },
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-        )
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceAround
+    Box(modifier = Modifier.fillMaxSize()){
+        Column(
+            modifier = Modifier.fillMaxSize()
         ) {
-            Button(onClick = { viewModel.startScan() }) {
-                Text(text = "Start scan")
-            }
-            Button(onClick = { viewModel.stopScan() }) {
-                Text(text = "Stop scan")
-            }
-            Button(onClick = { viewModel.waitForIncomingConnections() }) {
-                Text(text = "Start server")
+            BluetoothDeviceList(
+                pairedDevices = state.pairedDevices,
+                scannedDevices = state.scannedDevices,
+                onClick = {
+                    viewModel.connectToDevice(it)
+                    navHostController.navigate(Screens.ChatScreen.route) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceAround
+            ) {
+                Button(onClick = { viewModel.startScan() }) {
+                    Text(text = "Start scan")
+                }
+                Button(onClick = { viewModel.stopScan() }) {
+                    Text(text = "Stop scan")
+                }
+                Button(onClick = { viewModel.waitForIncomingConnections() }) {
+                    Text(text = "Start server")
+                }
             }
         }
     }
