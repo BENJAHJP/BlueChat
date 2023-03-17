@@ -37,9 +37,6 @@ fun ChatScreen(
 ) {
     val state = viewModel.state.collectAsState()
 
-    val dev = viewModel.state.collectAsState().value.pairedDevices.size
-    Log.d("===============================", "ChatScreen: ${dev.toString()}")
-
     var message = rememberSaveable { mutableStateOf("") }
 
     val keyboardController = LocalSoftwareKeyboardController.current
