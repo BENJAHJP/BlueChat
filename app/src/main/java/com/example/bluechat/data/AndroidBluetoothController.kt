@@ -121,6 +121,7 @@ class AndroidBluetoothController(
         if (!hasPermission(Manifest.permission.BLUETOOTH_CONNECT)){
             return
         }
+
         bluetoothAdapter
             ?.bondedDevices
             ?.map { it.toBluetoothDeviceDomain() }

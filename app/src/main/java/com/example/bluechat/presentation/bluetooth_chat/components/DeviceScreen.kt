@@ -13,6 +13,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -25,14 +26,14 @@ import com.example.bluechat.presentation.bluetooth_chat.BluetoothViewModel
 fun DeviceScreen(
     viewModel: BluetoothViewModel = hiltViewModel()
 ) {
-    val state = viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsState()
 
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
         BluetoothDeviceList(
-            pairedDevices = state.value.pairedDevices,
-            scannedDevices = state.value.scannedDevices,
+            pairedDevices = state.pairedDevices,
+            scannedDevices = state.scannedDevices,
             onClick = { viewModel.connectToDevice(it)},
             modifier = Modifier
                 .fillMaxWidth()

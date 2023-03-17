@@ -20,7 +20,6 @@ class FoundDeviceReceiver(
                 } else {
                     intent.getParcelableExtra(BluetoothDevice.EXTRA_NAME)
                 }
-
                 device?.let(onDeviceFound)
             }
         }
