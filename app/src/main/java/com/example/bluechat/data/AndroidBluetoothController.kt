@@ -10,6 +10,7 @@ import android.bluetooth.BluetoothSocket
 import android.content.Context
 import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.os.Build
 import com.example.bluechat.domain.BluetoothController
 import com.example.bluechat.domain.BluetoothDeviceDomain
 import com.example.bluechat.domain.BluetoothMessage
@@ -95,9 +96,19 @@ class AndroidBluetoothController(
         )
     }
     override fun startDiscovery() {
-        if (!hasPermission(Manifest.permission.BLUETOOTH_SCAN)){
-            return
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+//            context.registerReceiver(
+//                foundDeviceReceiver,
+//                IntentFilter(BluetoothDevice.ACTION_FOUND)
+//            )
+//
+//            updatePairedDevice()
+//
+//            bluetoothAdapter?.startDiscovery()
+//        }
+//        if (!hasPermission(Manifest.permission.BLUETOOTH_SCAN)){
+//            return
+//        }
 
         context.registerReceiver(
             foundDeviceReceiver,
@@ -113,11 +124,20 @@ class AndroidBluetoothController(
         if (!hasPermission(Manifest.permission.BLUETOOTH_SCAN)){
             return
         }
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+            bluetoothAdapter?.cancelDiscovery()
+        }
         bluetoothAdapter?.cancelDiscovery()
     }
 
     private fun updatePairedDevice(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+            bluetoothAdapter
+                ?.bondedDevices
+                ?.map { it.toBluetoothDeviceDomain() }
+                ?.also { devices ->
+                    _pairedDevices.update { devices } }
+        }
         if (!hasPermission(Manifest.permission.BLUETOOTH_CONNECT)){
             return
         }
