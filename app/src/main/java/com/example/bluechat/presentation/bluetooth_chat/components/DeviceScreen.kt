@@ -19,12 +19,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.example.bluechat.domain.BluetoothDevice
 import com.example.bluechat.presentation.bluetooth_chat.BluetoothViewModel
+import com.example.bluechat.presentation.screens.Screens
 
 @Composable
 fun DeviceScreen(
-    viewModel: BluetoothViewModel = hiltViewModel()
+    viewModel: BluetoothViewModel = hiltViewModel(),
+    navHostController: NavHostController
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -34,7 +37,9 @@ fun DeviceScreen(
         BluetoothDeviceList(
             pairedDevices = state.pairedDevices,
             scannedDevices = state.scannedDevices,
-            onClick = { viewModel.connectToDevice(it)},
+            onClick = {
+                viewModel.connectToDevice(it)
+                navHostController.navigate(Screens.ChatScreen.route) },
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
@@ -96,7 +101,6 @@ fun BluetoothDeviceList(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
-                    .clickable { onClick(device) }
             )
         }
     }

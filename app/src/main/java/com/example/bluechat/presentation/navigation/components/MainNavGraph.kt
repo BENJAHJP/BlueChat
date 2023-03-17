@@ -20,7 +20,7 @@ fun MainNavGraph(
             ChatScreen()
         }
         composable(route = Screens.DeviceScreen.route){
-            DeviceScreen()
+            DeviceScreen(navHostController = navHostController)
         }
     }
 }
