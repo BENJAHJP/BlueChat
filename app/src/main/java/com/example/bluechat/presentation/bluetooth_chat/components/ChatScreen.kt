@@ -1,6 +1,6 @@
 package com.example.bluechat.presentation.bluetooth_chat.components
 
-import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,27 +19,56 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.example.bluechat.presentation.bluetooth_chat.BluetoothViewModel
+import com.example.bluechat.presentation.screens.Screens
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun ChatScreen(
     viewModel: BluetoothViewModel = hiltViewModel(),
+    navHostController: NavHostController
 ) {
-    val state = viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsState()
 
     var message = rememberSaveable { mutableStateOf("") }
 
     val keyboardController = LocalSoftwareKeyboardController.current
+    val context = LocalContext.current
+
+    LaunchedEffect(key1 = state.errorMessage) {
+        state.errorMessage?.let { message ->
+            Toast.makeText(
+                context,
+                message,
+                Toast.LENGTH_LONG
+            ).show()
+        }
+    }
+    
+    LaunchedEffect(key1 = state.isConnected) {
+        if(!state.isConnected) {
+            Toast.makeText(
+                context,
+                "You're connected!",
+                Toast.LENGTH_LONG
+            ).show()
+
+            navHostController.popBackStack()
+        }
+    }
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -68,7 +97,7 @@ fun ChatScreen(
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ){
-            items(state.value.messages){ message ->
+            items(state.messages){ message ->
                 Column( modifier = Modifier.fillMaxWidth()) {
                     ChatMessage(
                         message = message,

@@ -1,5 +1,6 @@
 package com.example.bluechat.presentation.bluetooth_chat.components
 
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,10 +16,12 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,45 +37,65 @@ fun DeviceScreen(
     navHostController: NavHostController
 ) {
     val state by viewModel.state.collectAsState()
+    val context = LocalContext.current
 
-    Box(modifier = Modifier.fillMaxSize()){
-        Column(
-            modifier = Modifier.fillMaxSize()
+    LaunchedEffect(key1 = state.errorMessage) {
+        state.errorMessage?.let { message ->
+            Toast.makeText(
+                context,
+                message,
+                Toast.LENGTH_LONG
+            ).show()
+        }
+    }
+    LaunchedEffect(key1 = state.isConnected) {
+        if(state.isConnected) {
+            Toast.makeText(
+                context,
+                "You're connected!",
+                Toast.LENGTH_LONG
+            ).show()
+
+            navHostController.navigate(Screens.ChatScreen.route)
+        }
+    }
+
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        BluetoothDeviceList(
+            pairedDevices = state.pairedDevices,
+            scannedDevices = state.scannedDevices,
+            onClick = {
+                viewModel.connectToDevice(it)
+                navHostController.navigate(Screens.ChatScreen.route) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceAround
         ) {
-            BluetoothDeviceList(
-                pairedDevices = state.pairedDevices,
-                scannedDevices = state.scannedDevices,
-                onClick = {
-                    viewModel.connectToDevice(it)
-                    navHostController.navigate(Screens.ChatScreen.route) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-            )
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
-                Button(onClick = { viewModel.startScan() }) {
-                    Text(text = "Start scan")
-                }
-                Button(onClick = { viewModel.stopScan() }) {
-                    Text(text = "Stop scan")
-                }
-                Button(onClick = { viewModel.waitForIncomingConnections() }) {
-                    Text(text = "Start server")
-                }
+            Button(onClick = { viewModel.startScan() }) {
+                Text(text = "Start scan")
+            }
+            Button(onClick = { viewModel.stopScan() }) {
+                Text(text = "Stop scan")
+            }
+            Button(onClick = { viewModel.waitForIncomingConnections() }) {
+                Text(text = "Start server")
             }
         }
-        if (state.isConnecting){
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                CircularProgressIndicator()
-                Text(text = "Connecting ...")
-            }
+    }
+    if (state.isConnecting){
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            CircularProgressIndicator()
+            Text(text = "Connecting ...")
         }
     }
 }
