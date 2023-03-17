@@ -57,7 +57,7 @@ fun ChatScreen(
             ).show()
         }
     }
-    
+
     LaunchedEffect(key1 = state.isConnected) {
         if(!state.isConnected) {
             Toast.makeText(
