@@ -72,7 +72,6 @@ fun DeviceScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
-                .padding(16.dp)
         )
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -146,7 +145,6 @@ fun BluetoothDeviceList(
                 text = device.name ?: "No name",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 16.dp)
                     .clickable { onClick(device) }
             )
         }
