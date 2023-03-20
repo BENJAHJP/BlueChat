@@ -140,13 +140,15 @@ fun BluetoothDeviceList(
             )
         }
         items(pairedDevices){ device ->
-            Text(
-                color = Color.White,
-                text = device.name ?: "No name",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { onClick(device) }
-            )
+            Column(modifier = Modifier.clickable { onClick(device) }) {
+                Text(
+                    color = Color.White,
+                    text = device.name ?: "No name",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                )
+            }
         }
         item {
             Text(
