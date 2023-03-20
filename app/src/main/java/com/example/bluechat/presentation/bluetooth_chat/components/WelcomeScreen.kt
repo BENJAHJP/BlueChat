@@ -2,6 +2,7 @@ package com.example.bluechat.presentation.bluetooth_chat.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -17,7 +18,10 @@ import com.example.bluechat.ui.theme.Blue
 fun WelcomeScreen(
     navHostController: NavHostController
 ) {
-    Column(modifier = Modifier.background(color = Blue)) {
+    Column(
+        modifier = Modifier.background(color = Blue)
+            .fillMaxSize()
+    ) {
         Button(
             colors = ButtonDefaults.buttonColors(
                 containerColor = Black,
