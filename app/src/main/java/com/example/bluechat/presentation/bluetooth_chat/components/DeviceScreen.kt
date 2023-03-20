@@ -146,7 +146,7 @@ fun BluetoothDeviceList(
                 text = device.name ?: "No name",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(vertical = 16.dp)
                     .clickable { onClick(device) }
             )
         }
