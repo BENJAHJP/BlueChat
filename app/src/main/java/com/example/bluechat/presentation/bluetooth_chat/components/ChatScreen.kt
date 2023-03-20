@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.bluechat.presentation.bluetooth_chat.BluetoothViewModel
+import com.example.bluechat.presentation.screens.Screens
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -59,11 +60,7 @@ fun ChatScreen(
 
     LaunchedEffect(key1 = state.isConnected) {
         if(!state.isConnected) {
-            Toast.makeText(
-                context,
-                "You're connected!",
-                Toast.LENGTH_LONG
-            ).show()
+            navHostController.popBackStack()
         }
     }
 
