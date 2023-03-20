@@ -1,6 +1,7 @@
 package com.example.bluechat.presentation.bluetooth_chat.components
 
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,6 +21,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -28,6 +31,8 @@ import androidx.navigation.NavHostController
 import com.example.bluechat.domain.BluetoothDevice
 import com.example.bluechat.presentation.bluetooth_chat.BluetoothViewModel
 import com.example.bluechat.presentation.screens.Screens
+import com.example.bluechat.ui.theme.Black
+import com.example.bluechat.ui.theme.Blue
 
 @Composable
 fun DeviceScreen(
@@ -54,7 +59,9 @@ fun DeviceScreen(
     }
 
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = Blue)
     ) {
         BluetoothDeviceList(
             pairedDevices = state.pairedDevices,
@@ -70,13 +77,31 @@ fun DeviceScreen(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceAround
         ) {
-            Button(onClick = { viewModel.startScan() }) {
+            Button(
+                onClick = { viewModel.startScan() },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Black,
+                    contentColor = Color.White
+                )
+            ) {
                 Text(text = "Start scan")
             }
-            Button(onClick = { viewModel.stopScan() }) {
+            Button(
+                onClick = { viewModel.stopScan() },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Black,
+                    contentColor = Color.White
+                )
+            ) {
                 Text(text = "Stop scan")
             }
-            Button(onClick = { viewModel.waitForIncomingConnections() }) {
+            Button(
+                onClick = { viewModel.waitForIncomingConnections() },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Black,
+                    contentColor = Color.White
+                )
+            ) {
                 Text(text = "Start server")
             }
         }
@@ -88,7 +113,10 @@ fun DeviceScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             CircularProgressIndicator()
-            Text(text = "Connecting ...")
+            Text(
+                color = Color.White,
+                text = "Connecting ..."
+            )
         }
     }
 }
@@ -103,6 +131,7 @@ fun BluetoothDeviceList(
     LazyColumn(modifier = modifier){
         item {
             Text(
+                color = Color.White,
                 text = "Paired Devices",
                 fontWeight = FontWeight.Bold,
                 fontSize = 24.sp,
@@ -112,6 +141,7 @@ fun BluetoothDeviceList(
         }
         items(pairedDevices){ device ->
             Text(
+                color = Color.White,
                 text = device.name ?: "No name",
                 modifier = Modifier
                     .fillMaxWidth()
@@ -121,6 +151,7 @@ fun BluetoothDeviceList(
         }
         item {
             Text(
+                color = Color.White,
                 text = "Scanned Devices",
                 fontWeight = FontWeight.Bold,
                 fontSize = 24.sp,
@@ -129,6 +160,7 @@ fun BluetoothDeviceList(
         }
         items(scannedDevices){ device ->
             Text(
+                color = Color.White,
                 text = device.name ?: "No name",
                 modifier = Modifier
                     .fillMaxWidth()
