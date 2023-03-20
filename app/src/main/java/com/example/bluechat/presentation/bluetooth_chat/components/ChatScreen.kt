@@ -33,7 +33,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.bluechat.presentation.bluetooth_chat.BluetoothViewModel
-import com.example.bluechat.presentation.screens.Screens
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -96,7 +95,7 @@ fun ChatScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ){
             items(state.messages){ message ->
-                Column( modifier = Modifier.fillMaxWidth()) {
+                Column(modifier = Modifier.fillMaxWidth()) {
                     ChatMessage(
                         message = message,
                         modifier = Modifier.align(

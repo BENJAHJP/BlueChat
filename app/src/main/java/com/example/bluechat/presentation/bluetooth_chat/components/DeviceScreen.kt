@@ -46,14 +46,9 @@ fun DeviceScreen(
             ).show()
         }
     }
+
     LaunchedEffect(key1 = state.isConnected) {
         if(state.isConnected) {
-            Toast.makeText(
-                context,
-                "You're connected!",
-                Toast.LENGTH_LONG
-            ).show()
-
             navHostController.navigate(Screens.ChatScreen.route)
         }
     }
