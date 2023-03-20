@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.bluechat.presentation.bluetooth_chat.components.ChatScreen
 import com.example.bluechat.presentation.bluetooth_chat.components.DeviceScreen
+import com.example.bluechat.presentation.bluetooth_chat.components.WelcomeScreen
 import com.example.bluechat.presentation.screens.Screens
 
 @Composable
@@ -14,8 +15,11 @@ fun MainNavGraph(
 ) {
     NavHost(
         navController = navHostController,
-        startDestination = Screens.DeviceScreen.route
+        startDestination = Screens.WelcomeScreen.route
     ){
+        composable(route = Screens.WelcomeScreen.route){
+            WelcomeScreen(navHostController = navHostController)
+        }
         composable(route = Screens.ChatScreen.route){
             ChatScreen(navHostController = navHostController)
         }

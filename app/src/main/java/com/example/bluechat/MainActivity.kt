@@ -57,7 +57,7 @@ class MainActivity : ComponentActivity() {
         }
         
         setContent {
-            BlueChatTheme {
+            BlueChatTheme(darkTheme = false, dynamicColor = false) {
                 MainNavGraph(navHostController = rememberNavController())
             }
         }
